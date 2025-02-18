@@ -29,7 +29,7 @@ public class Radio {
 
     // Установка номера радиостанции вручную
     public void setRadioStationNumber(int newRadioStationNumber) {
-        if (newRadioStationNumber < 0 || newRadioStationNumber >= this.amountRadioStation) {
+        if (newRadioStationNumber < 0 || newRadioStationNumber > this.amountRadioStation) {
             return;
         }
         this.radioStationNumber = newRadioStationNumber;
