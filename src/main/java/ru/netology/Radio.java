@@ -1,24 +1,28 @@
 package ru.netology;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Radio {
 
-    private int volume;
-    private int radioStationNumber;
+    private int volume;  // Уровень громкости
+    private int radioStationNumber;  // Текущая радиостанция
+    private int amountRadioStation = 9;  // Кол-во радиостанций
 
 
-    // Проверка текущего уровня громкости
-    public int getVolume() {
-        return this.volume;
-    }
-
-    // Проверка текущего номера радиостанции
-    public int getRadioStationNumber() {
-        return this.radioStationNumber;
+       // Конструктор класса, который задает нужное количество радиостанций
+    public Radio(int amountRadioStation) {
+        this.amountRadioStation = amountRadioStation - 1;
     }
 
     // Установка номера радиостанции вручную
     public void setRadioStationNumber(int newRadioStationNumber) {
-        if (newRadioStationNumber < 0 || newRadioStationNumber > 9) {
+        if (newRadioStationNumber < 0 || newRadioStationNumber > this.amountRadioStation) {
             return;
         }
         this.radioStationNumber = newRadioStationNumber;
@@ -26,7 +30,7 @@ public class Radio {
 
     // Переключение на следующую радиостанцию
     public void nextRadioStationNumber() {
-        if (this.radioStationNumber == 9) {
+        if (this.radioStationNumber == this.amountRadioStation) {
             this.radioStationNumber = 0;
             return;
         }
@@ -36,7 +40,7 @@ public class Radio {
     // Переключение на предыдущую радиостанцию
     public void prevRadioStationNumber() {
         if (this.radioStationNumber == 0) {
-            this.radioStationNumber = 9;
+            this.radioStationNumber = this.amountRadioStation;
             return;
         }
         this.radioStationNumber--;

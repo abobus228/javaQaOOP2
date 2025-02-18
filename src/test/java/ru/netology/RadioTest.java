@@ -5,14 +5,39 @@ import org.junit.jupiter.api.Test;
 
 public class RadioTest {
 
+    Radio radio = new Radio();
+    Radio radioAmount = new Radio(20);
+
+
     @Test  // Установка вручную валидного номера радиостанции
     public void shouldSetRadioStationNumber() {
-        Radio radio = new Radio();
 
         radio.setRadioStationNumber(5);
 
         int expected = 5;
         int actual = radio.getRadioStationNumber();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test  // Установка вручную номера радиостанции при указании своего диапазона станций
+    public void shouldSetRadioStationNumberInObjectWithAmountRadio() {
+
+        radioAmount.setRadioStationNumber(15);
+
+        int expected = 15;
+        int actual = radioAmount.getRadioStationNumber();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test  // Установка вручную невалидного номера радиостанции при указании своего диапазона станций
+    public void shouldNotSetRadioStationNumberAboveMaxInObjectWithAmountRadio() {
+
+        radioAmount.setRadioStationNumber(20);
+
+        int expected = 0;
+        int actual = radioAmount.getRadioStationNumber();
 
         Assertions.assertEquals(expected, actual);
     }
@@ -35,17 +60,27 @@ public class RadioTest {
 
     @Test  // Проверка на граничное значение установки номера радиостанции (Валидное)
     public void shouldSetRadioStationNumberBorderValueCorrect() {
-        Radio radio = new Radio();
 
         // Нижняя граница значений
         radio.setRadioStationNumber(0);
+        radioAmount.setRadioStationNumber(0);
+
         int expected = 0;
         int actual = radio.getRadioStationNumber();
         Assertions.assertEquals(expected, actual);
+        // Проверка с установкой своего диапазона
+        actual = radioAmount.getRadioStationNumber();
+        Assertions.assertEquals(expected, actual);
+
 
         radio.setRadioStationNumber(1);
+        radioAmount.setRadioStationNumber(1);
+
         expected = 1;
         actual = radio.getRadioStationNumber();
+        Assertions.assertEquals(expected, actual);
+        // Проверка с установкой своего диапазона
+        actual = radioAmount.getRadioStationNumber();
         Assertions.assertEquals(expected, actual);
 
         // Верхняя граница значений
@@ -58,11 +93,21 @@ public class RadioTest {
         expected = 8;
         actual = radio.getRadioStationNumber();
         Assertions.assertEquals(expected, actual);
+
+        // Верхняя граница значений у объекта с установленным количеством радиостанций
+        radioAmount.setRadioStationNumber(19);
+        expected = 19;
+        actual = radioAmount.getRadioStationNumber();
+        Assertions.assertEquals(expected, actual);
+
+        radioAmount.setRadioStationNumber(18);
+        expected = 18;
+        actual = radioAmount.getRadioStationNumber();
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test  // Проверка на граничное значение установки номера радиостанции (Невалидное)
     public void shouldNotSetRadioStationNumberBorderValueNotCorrect() {
-        Radio radio = new Radio();
 
         // Нижняя граница значения (ниже 0)
         radio.setRadioStationNumber(-1);
@@ -77,9 +122,8 @@ public class RadioTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test  // Переключение на следующую радиостанцию (если ее значение меньше последней - 9)
+    @Test  // Переключение на следующую радиостанцию (если ее значение меньше последней)
     public void shouldNextRadioStationNumberBelowMax() {
-        Radio radio = new Radio();
 
         radio.setRadioStationNumber(4);
         radio.nextRadioStationNumber(); // Следующая радиостанция
@@ -88,11 +132,20 @@ public class RadioTest {
         int actual = radio.getRadioStationNumber();
 
         Assertions.assertEquals(expected, actual);
+
+
+        // Проверка переключения при установке диапазона вручную
+        radioAmount.setRadioStationNumber(14);
+        radioAmount.nextRadioStationNumber(); // Следующая радиостанция
+
+        expected = 15;
+        actual = radioAmount.getRadioStationNumber();
+
+        Assertions.assertEquals(expected, actual);
     }
 
-    @Test  // Переключение на следующую радиостанцию (если ее значение было равно посленей - 9)
+    @Test  // Переключение на следующую радиостанцию (если ее значение было равно последней)
     public void shouldNextRadioStationNumberAboveMax() {
-        Radio radio = new Radio();
 
         radio.setRadioStationNumber(9);  // Последняя радиостанция в списке
         radio.nextRadioStationNumber();  // Следующая радиостанция
@@ -101,11 +154,19 @@ public class RadioTest {
         int actual = radio.getRadioStationNumber();
 
         Assertions.assertEquals(expected, actual);
+
+
+        // Проверка переключения при установке диапазона вручную
+        radioAmount.setRadioStationNumber(19);
+        radioAmount.nextRadioStationNumber(); // Следующая радиостанция
+
+        actual = radioAmount.getRadioStationNumber();
+
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test  // Переключение на предыдущую радиостанцию (если ее значение выше начальной - 0)
     public void shouldPrevRadioStationNumberAboveMin() {
-        Radio radio = new Radio();
 
         radio.setRadioStationNumber(4);
         radio.prevRadioStationNumber(); // Предыдущая радиостанция
@@ -114,11 +175,20 @@ public class RadioTest {
         int actual = radio.getRadioStationNumber();
 
         Assertions.assertEquals(expected, actual);
+
+
+        // Проверка переключения при установке диапазона вручную
+        radioAmount.setRadioStationNumber(14);
+        radioAmount.prevRadioStationNumber(); // Следующая радиостанция
+
+        expected = 13;
+        actual = radioAmount.getRadioStationNumber();
+
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test  // Переключение на предыдущую радиостанцию (если ее значение было равно начальной - 0)
     public void shouldNextRadioStationNumberBelowMin() {
-        Radio radio = new Radio();
 
         radio.setRadioStationNumber(0);  // Последняя радиостанция в списке
         radio.prevRadioStationNumber();  // Следующая радиостанция
@@ -127,11 +197,20 @@ public class RadioTest {
         int actual = radio.getRadioStationNumber();
 
         Assertions.assertEquals(expected, actual);
+
+
+        // Проверка переключения при установке диапазона вручную
+        radioAmount.setRadioStationNumber(0);
+        radioAmount.prevRadioStationNumber(); // Следующая радиостанция
+
+        expected = 19;
+        actual = radioAmount.getRadioStationNumber();
+
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test  // Увеличение громкости звука (если значение меньше максимального)
     public void shouldIncreaseVolumeBelowMax() {
-        Radio radio = new Radio();
 
         for (int i = 0; i < 95; i++) {
             radio.increaseVolume();
@@ -145,7 +224,6 @@ public class RadioTest {
 
     @Test  // Увеличение громкости звука (если значение больше максимального)
     public void shouldIncreaseVolumeAboveMax() {
-        Radio radio = new Radio();
 
         for (int i = 0; i < 110; i++) {
             radio.increaseVolume();
@@ -159,7 +237,6 @@ public class RadioTest {
 
     @Test  // Проверка валидных граничных значений при увеличении звука
     public void shouldIncreaseVolumeBorderValueCorrect() {
-        Radio radio = new Radio();
         Radio radioMax = new Radio();
 
         // Ниже граничного значения - 99
@@ -181,7 +258,6 @@ public class RadioTest {
 
     @Test  // Уменьшение громкости звука (если значение выше минимального)
     public void shouldDecreaseVolumeAboveMin() {
-        Radio radio = new Radio();
 
         for (int i = 0; i < 10; i++) {
             radio.increaseVolume();
@@ -198,7 +274,6 @@ public class RadioTest {
 
     @Test  // Уменьшение громкости звука (если значение ниже минимального)
     public void shouldDecreaseVolumeBelowMin() {
-        Radio radio = new Radio();
 
         for (int i = 0; i < 10; i++) {
             radio.increaseVolume();
@@ -215,7 +290,6 @@ public class RadioTest {
 
     @Test  // Проверка валидных граничных значений при уменьшении звука
     public void shouldDecreaseVolumeBorderValueCorrect() {
-        Radio radio = new Radio();
         Radio radioMin = new Radio();
 
         // Выше граничного значения - 1
